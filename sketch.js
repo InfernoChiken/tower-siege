@@ -7,7 +7,7 @@ var engine, world;
 var holder,ball,ground;
 var stand1,stand2;
 var ball;
-var slingShot;
+var sling;
 var polygon_img;
 var polygon;
 
@@ -22,6 +22,8 @@ function setup() {
   ground = new Ground();
   stand1 = new Stand(390,300,250,10);
   stand2 = new Stand(700,200,200,10);
+  polygon = Bodies.rectangle(100, 100, 20, 20);
+  World.add(world, polygon);
  
   //level one
   block1 = new Block(300,275,30,40);
@@ -44,11 +46,14 @@ function setup() {
   block15 = new Block(420,195,30,40);
   //top
   block16 = new Block(390,155,30,40);
+
+  sling = new SlingShot(polygon, {x:100, y:250});
+  World.add(world, sling);
   
 
 }
 function draw() {
-  background(56,44,44); 
+  background("blue"); 
  
   textSize(20);
   fill("lightyellow");
@@ -80,7 +85,16 @@ function draw() {
   fill("grey");
   block16.display();
   fill("yellow");
-  polygon_img.display();
- 
+  image(polygon_img, polygon.position.x - 5, polygon.position.y - 10, 30, 30);
+  sling.display();
 
+}
+
+function mouseDragged(){
+  Matter.Body.setPosition(polygon, {x: mouseX , y: mouseY});
+}
+
+
+function mouseReleased(){
+  sling.fly();
 }
